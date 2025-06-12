@@ -7,8 +7,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <header className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-5xl mx-auto py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-blue-700">
           GenericCo
         </Link>
@@ -42,7 +42,7 @@ export default function Header() {
         </button>
       </div>
       {isOpen && (
-        <div className="md:hidden px-4 pb-4 space-y-2">
+        <div className="md:hidden px-4 pb-4 space-y-2 text-right">
           <Link href="/about" className="block text-gray-700 hover:text-blue-700">About</Link>
           <Link href="/services" className="block text-gray-700 hover:text-blue-700">Services</Link>
           <Link href="/contact" className="block text-gray-700 hover:text-blue-700">Contact</Link>
