@@ -15,6 +15,7 @@ export default function Header() {
         <nav className="hidden md:flex gap-6">
           <Link href="/about" className="text-gray-700 hover:text-blue-700">About</Link>
           <Link href="/services" className="text-gray-700 hover:text-blue-700">Services</Link>
+          <Link href="/blog" className="text-gray-700 hover:text-blue-700">Blog</Link>
           <Link href="/contact" className="text-gray-700 hover:text-blue-700">Contact</Link>
         </nav>
         <button
@@ -45,6 +46,7 @@ export default function Header() {
         <div className="md:hidden px-4 pb-4 space-y-2 text-right">
           <Link href="/about" className="block text-gray-700 hover:text-blue-700">About</Link>
           <Link href="/services" className="block text-gray-700 hover:text-blue-700">Services</Link>
+          <Link href="/blog" className="text-gray-700 hover:text-blue-700">Blog</Link>
           <Link href="/contact" className="block text-gray-700 hover:text-blue-700">Contact</Link>
         </div>
       )}
