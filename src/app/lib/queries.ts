@@ -20,3 +20,17 @@ export async function getPost(slug: string) {
     featured_media_url: featuredMedia,
   };
 }
+
+export async function getService(slug: string) {
+  const res = await fetch(
+    `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/services?slug=${slug}&_embed`,
+    { next: { revalidate: 60 } }
+  );
+
+  if (!res.ok) return null;
+
+  const data = await res.json();
+  if (!data.length) return null;
+
+  return data[0];
+}

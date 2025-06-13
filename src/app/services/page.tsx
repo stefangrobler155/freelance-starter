@@ -1,5 +1,5 @@
 'use client';
-
+import Link from 'next/link';
 import { useEffect, useState } from "react";
 import { fetchServices, fetchTestimonials } from '@/lib/api';
 
@@ -8,7 +8,7 @@ export default function ServicesPage() {
   
   useEffect(() => {
     fetchServices().then(data => {
-      console.log('Services:', data);
+     
       setServices(data);
     });
   }, []);
@@ -26,7 +26,10 @@ export default function ServicesPage() {
                   className="w-6 h-6 mb-4 mx-auto"
                 />
               )}
-              <h3 className="font-semibold text-lg mb-1 ml-2" dangerouslySetInnerHTML={{ __html: service.title.rendered }} />
+              <Link href={`/services/${service.slug}`}>
+                <h3 className="font-semibold text-lg mb-1 ml-2" dangerouslySetInnerHTML={{ __html: service.title.rendered }} />
+              </Link>
+              
               </div>
               
               <p
