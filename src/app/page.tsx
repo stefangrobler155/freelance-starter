@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { fetchServices, fetchTestimonials } from '@/lib/api';
+import { fetchServices, fetchTestimonials } from '@/lib/api'; // Adjust the import path as necessary
 import TestimonialCarousel from './components/TestimonialCarousel/TestimonialCarousel';
 
 export default function Home() {
@@ -9,12 +9,10 @@ export default function Home() {
 
 useEffect(() => {
   fetchServices().then(data => {
-    console.log('Services:', data);
     setServices(data);
   });
 
   fetchTestimonials().then(data => {
-    console.log('Testimonials:', data); // <-- Check this
     setTestimonials(data);
   });
 }, []);
