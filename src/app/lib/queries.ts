@@ -27,6 +27,28 @@ export async function getCategories() {
   return res.json();
 }
 
+export async function getPaginatedPosts(page = 1, perPage = 6) {
+  const res = await fetch(
+    `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts?_embed&page=${page}&per_page=${perPage}`,
+    { next: { revalidate: 60 } }
+  );
+
+  if (!res.ok) throw new Error('Failed to fetch paginated posts');
+
+  const total = Number(res.headers.get('X-WP-Total')) || 0;
+  const totalPages = Number(res.headers.get('X-WP-TotalPages')) || 1;
+
+  const data = await res.json();
+
+  return {
+    posts: data,
+    total,
+    totalPages,
+  };
+}
+
+
+
 
 export async function getService(slug: string) {
   const res = await fetch(

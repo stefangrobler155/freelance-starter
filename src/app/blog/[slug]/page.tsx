@@ -1,19 +1,6 @@
+import { getPost } from '@/app/lib/queries';
 import { notFound } from 'next/navigation';
-import { getPost } from '@/app/lib/queries'; // make sure this exists
-import { Metadata } from 'next';
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPost(slug);
-
-  return {
-    title: post?.title?.rendered || 'Post not found',
-  };
-}
+import Link from 'next/link';
 
 export default async function BlogPostPage({
   params,
@@ -22,28 +9,52 @@ export default async function BlogPostPage({
 }) {
   const { slug } = await params;
   const post = await getPost(slug);
-
   if (!post) return notFound();
 
-  const featuredImage = post.featured_media_url || '/fallback.jpg';
+  const image = post._embedded?.['wp:featuredmedia']?.[0]?.source_url ?? '/fallback.jpg';
+  const author = post._embedded?.author?.[0]?.name ?? '';
+  const categories = post._embedded?.['wp:term']?.[0] ?? [];
 
   return (
-    <article className="prose max-w-3xl mx-auto py-16">
-      <h1 className="text-4xl font-bold mb-4">{post.title.rendered}</h1>
+    <article className="max-w-3xl mx-auto px-4 py-16">
+      <div className="mb-6 text-sm text-blue-600">
+        <Link href="/blog" className="hover:underline">← Back to Blog</Link>
+      </div>
 
-      {featuredImage && (
+      <h1 className="text-4xl font-bold text-blue-800 mb-4">{post.title.rendered}</h1>
+
+      <div className="flex flex-wrap items-center text-sm text-gray-500 mb-6 gap-x-4 gap-y-2">
+        <span>{new Date(post.date).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })}</span>
+        {author && <span>By {author}</span>}
+        {categories.length > 0 && (
+          <ul className="flex flex-wrap gap-2">
+            {categories.map((cat: { id: number; slug: string; name: string }) => (
+              <li key={cat.id}>
+                <Link href={`/blog/category/${cat.slug}`} className="text-blue-600 hover:underline">
+                  {cat.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {image && (
         <img
-          src={featuredImage}
+          src={image}
           alt={post.title.rendered}
-          className="w-full rounded mb-6"
+          className="w-full h-64 object-cover rounded-lg shadow mb-10"
         />
       )}
 
-      {post.content?.rendered ? (
-        <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
-      ) : (
-        <p className="text-gray-500 italic">No content available.</p>
-      )}
+      <div
+        className="prose prose-lg max-w-none text-gray-800"
+        dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+      />
     </article>
   );
 }
