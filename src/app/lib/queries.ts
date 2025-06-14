@@ -21,6 +21,13 @@ export async function getPost(slug: string) {
   };
 }
 
+export async function getCategories() {
+  const res = await fetch(`${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/categories`);
+  if (!res.ok) throw new Error('Failed to fetch categories');
+  return res.json();
+}
+
+
 export async function getService(slug: string) {
   const res = await fetch(
     `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/services?slug=${slug}&_embed`,
