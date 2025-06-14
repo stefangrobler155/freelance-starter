@@ -13,9 +13,13 @@ type PostGridProps = {
 };
 
 export default function PostGrid({ posts }: PostGridProps) {
+  const filteredPosts = posts.filter(
+    (post) => post.title?.rendered || post.excerpt?.rendered || post.slug
+  );
+
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      {posts.map((post) => {
+      {filteredPosts.map((post) => {
         const image = post._embedded?.['wp:featuredmedia']?.[0]?.source_url ?? '/fallback.jpg';
         const author = post._embedded?.author?.[0]?.name ?? '';
         const categories: Category[] = post._embedded?.['wp:term']?.[0] ?? [];

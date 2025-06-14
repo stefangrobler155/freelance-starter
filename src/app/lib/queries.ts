@@ -47,6 +47,13 @@ export async function getPaginatedPosts(page = 1, perPage = 6) {
   };
 }
 
+export async function searchPosts(query: string) {
+  const res = await fetch(
+    `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(query)}`
+  );
+  if (!res.ok) throw new Error('Failed to search posts');
+  return res.json();
+}
 
 
 
